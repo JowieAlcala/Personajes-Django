@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Personajes</title>
+</head>
+<body>
+{% if error %}
+<!-- Sección de página de error -->
+<h1> {{ message }}</h1>
+<p>Lo sentimos, el personaje solicitado no existe.</p>
+<img src="{% static 'characters/meme.jpg' %}" alt="Error Meme">
+{% elif character %}
+<!-- Sección de detalle de un personaje -->
+<h1>{{ character.name }}</h1>
+4<img src="{% static character.image %}" alt="{{ character.name }}">
+<p><em>"{{ character.quote }}"</em></p>
+<p><a href="/home">← Volver al listado</a></p>
+{% else %}
+<!-- Sección de Home: listado de personajes -->
+<h1>Listado de Personajes</h1>
+<ul>
+{% for pid, char in characters.items %}
+<li>
+<a href="{% url 'personatge' pid %}">{{ char.name }}</a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+</body>
+</html>
