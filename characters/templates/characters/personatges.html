@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% if mode == "informacio" %}
+            {{ personatge.nom }}
+        {% elif mode == "error" %}
+            Error personatge
+        {% else %}
+            Personatges
+        {% endif %}
+    </title>
+
+        <style>
+            body {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                background: linear-gradient(135deg, #fdfbfb 0%, #e2e8f0 100%);
+                color: #1f2933;
+                padding: 24px;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 12px;
+                letter-spacing: 0.03em;
+            }
+
+            p {
+                margin: 6px 0;
+                font-size: 0.95rem;
+            }
+
+            a {
+                color: #2563eb;          
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .llista {
+                list-style: none;
+                margin: 18px auto 0 auto;
+                padding: 0;
+                max-width: 700px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+
+            .llista li {
+                background: #e5e7eb;     
+                padding: 10px 16px;
+                border-radius: 999px;
+                min-width: 120px;
+                transition: background 0.15s, transform 0.15s;
+            }
+
+            .llista li:hover {
+                background: #c3dafe;      
+                transform: translateY(-2px);
+            }
+
+            img {
+                max-width: 260px;
+                border-radius: 14px;
+                margin-top: 14px;
+                box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
+                border: 3px solid #e5e7eb;
+            }     
+</style>
+
+</head>
+<body>
+
+{% if mode == "home" %}
+
+    <h1>Home - Llistat de personatges</h1>
+    <p>Opcions que pots posar a la URL:</p>
+    <ul class="llista">
+        {% for clau, p in personatges.items %}
+            <li>
+                
+                <a href="/{{ clau }}">{{ p.nom }}</a>
+            </li>
+        {% endfor %}
+        <li>
+          
+            <a href="/home">home</a>
+        </li>
+    </ul>
+
+{% elif mode == "informacio" %}
+
+    <h1>{{ personatge.nom }}</h1>
+    <img src="{% static personatge.imatge %}" alt="{{ personatge.nom }}">
+    <p>"{{ personatge.frase }}"</p>
+    <p><a href="/home">← Tornar a la Home</a></p>
+
+{% elif mode == "error" %}
+
+    <h1>Error</h1>
+    <p class="missatge-error">{{ missatge }}</p>
+    <img src="{% static 'characters/meme.jpg' %}" alt="Error meme">
+    <p><a href="/home">← Tornar a la Home</a></p>
+
+{% endif %}
+
+</body>
+</html>

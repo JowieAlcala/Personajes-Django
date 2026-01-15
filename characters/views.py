@@ -1,45 +1,64 @@
 from django.shortcuts import render
 
-# Datos de 5 personajes (reales o ficticios) con su información
-characters_data = {
-1: {
-"name": "Harry Potter",
-"image": "characters/harry.jpg",
-"quote": "¡Expelliarmus!"
-},
-2: {
-"name": "Darth Vader",
-"image": "characters/vader.jpg",
-"quote": "Yo soy tu padre."
-},
-3: {
-"name": "Sherlock Holmes",
-"image": "characters/sherlock.jpg",
-"quote": "Elemental, mi querido Watson."
-},
-4: {
-"name": "Wonder Woman",
-"image": "characters/wonder.jpg",
-"quote": "En un mundo de mujeres, miedo no hay."
-},
-5: {
-"name": "Goku",
-"image": "characters/goku.jpg",
-"quote": "¡Kamehameha!"
+# Diccionario con 5 personajes
+PERSONATGES = {
+    "goku": {
+        "nom": "Goku",
+        "imatge": "characters/goku.jpg",
+        "frase": "Kamehameha!"
+    },
+    "eren": {
+        "nom": "Eren Jaeger",
+        "imatge": "characters/eren.jpg",
+        "frase": "TatakaE!"
+    },
+    "naruto": {
+        "nom": "Naruto Uzumaki",
+        "imatge": "characters/naruto.jpg",
+        "frase": "Dattebayo!"
+    },
+    "luffy": {
+        "nom": "Monkey D. Luffy",
+        "imatge": "characters/luffy.jpg",
+        "frase": "Voy a ser el Rey de los Piratas."
+    },
+    "mikasa": {
+        "nom": "Mikasa Ackerman",
+        "imatge": "characters/mikasa.jpg",
+        "frase": "Eren..."
+    },
 }
-}
+
+
 def home(request):
-# Pasamos la lista de personajes al contexto para la plantilla
-context = {"characters": characters_data}
-return render(request, "characters/personajes.html", context)
-def personatge(request, id):
-# Buscar el personaje por id en nuestro diccionario
-if id in characters_data:
-context = {"character": characters_data[id]}
-else:
-# Si el id no existe, preparamos contexto de error con mensaje
-context = {
-"error": True,
-6"message": f"Personaje {id} no encontrado"
-}
-return render(request, "characters/personajes.html", context)
+    """
+    Página principal: listado de personajes y opciones de URL.
+    """
+    context = {
+        "mode": "home",
+        "personatges": PERSONATGES,
+    }
+    return render(request, "characters/personatges.html", context)
+
+
+def personatge(request, opcio):
+    """
+    /home -> vuelve a la home
+    /nombre_personaje -> ficha
+    /cosa_incorrecta -> error con meme
+    """
+    if opcio == "home":
+        return home(request)
+
+    if opcio in PERSONATGES:
+        context = {
+            "mode": "informacio",
+            "personatge": PERSONATGES[opcio],
+        }
+    else:
+        context = {
+            "mode": "error",
+            "missatge": f"El personatge «{opcio}» no existeix ",
+        }
+
+    return render(request, "characters/personatges.html", context)
